@@ -6,7 +6,7 @@ from urllib import request
 from bs4 import BeautifulSoup
 
 
-chromeDefaultPath = r'C:\Users\daniel\Downloads'
+chromeDefaultPath = r'C:\Users\Administrator\Downloads'
 chromeDriver = 'C:\Program Files (x86)\Google\Chrome\Application\chromedriver'
 
 # define Create a folder function
@@ -51,7 +51,7 @@ def changeFileName(path,order,searchName,year):
 #初始化 GUI
 GUI = Tk()
 GUI.title(' Google Trends Automation')
-GUI.geometry('300x650')
+GUI.geometry('300x800')
 GUI.resizable(width=False, height=False)
 
 #Blank
@@ -174,13 +174,22 @@ def downloadCSV() :
 
 
     # Select the browser
-    chrome = webdriver.Chrome(chromeDriver)
+
+
+
+
+    options = webdriver.ChromeOptions()
+    options.add_argument('--lang=en-us.utf-8')
+    chrome = webdriver.Chrome(executable_path=chromeDriver, chrome_options=options)
+
+
+
 
     # Downloading
     while (start_year_int <= end_year_int):
 
         chrome.get('https://www.google.com.au/trends/explore?geo='+ world_str +'&date=' + str(start_year_int) + '-01-01%20' + str(
-            end_year_int) + '-12-31&q=' + search_str)
+            start_year_int + 1) + '-12-31&q=' + search_str)
 
         chrome.implicitly_wait(30)
 
@@ -209,14 +218,16 @@ def downloadMultipleCSV():
     search_array = search_str.split(',')
 
     # Select the browser
-    chrome = webdriver.Chrome(chromeDriver)
+    options = webdriver.ChromeOptions()
+    options.add_argument('--lang=en-us.utf-8')
+    chrome = webdriver.Chrome(executable_path=chromeDriver, chrome_options=options)
 
     for index in range(len(search_array)):
         # Downloading
         while (start_year_int <= end_year_int):
             chrome.get('https://www.google.com.au/trends/explore?geo=' + world_str + '&date=' + str(
                 start_year_int) + '-01-01%20' + str(
-                end_year_int) + '-12-31&q=' + search_array[index])
+                start_year_int + 1) + '-12-31&q=' + search_array[index])
 
             chrome.implicitly_wait(30)
 
